@@ -1,5 +1,5 @@
 # task-manager
-An app using:
+This app uses:
 * node
 * express
 * mongodb
