@@ -4,12 +4,17 @@
   "description": "task manager app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node src/db/mongoose.js"
   },
   "keywords": [],
   "author": "saad_saif",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^5.11.12"
+    "express": "^4.17.1",
+    "mongoose": "^5.11.12",
+    "validator": "^13.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
