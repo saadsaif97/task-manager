@@ -4,7 +4,8 @@
   "description": "task manager app",
   "main": "index.js",
   "scripts": {
-    "dev": "node src/db/mongoose.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "saad_saif",
