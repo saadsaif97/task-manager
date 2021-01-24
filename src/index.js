@@ -1,33 +1,19 @@
 const express = require('express')
 require('./db/mongoose')
 
-// import models
-const User = require('./models/user')
-const Task = require('./models/task')
+// import router
+const userRouter = require('./routers/user')
+const taskRouter = require('./routers/task')
 
 const app = express()
 const port = process.env.PORT || 3000
 
+// to parse the incoming json object in body of request
 app.use(express.json())
 
-// create user API
-app.post('/users', (req, res) => {
-  const user = new User(req.body)
-  user
-    .save()
-    .then((data) => res.status(201).send(data))
-    .catch((err) => res.status(400).send(err))
-})
-
-// create task API
-app.post('/tasks', (req, res) => {
-  const task = new Task(req.body)
-  task
-    .save()
-    .then((data) => res.status(201).send(data))
-    .catch((err) => res.status(400).send(err))
-})
+app.use(userRouter)
+app.use(taskRouter)
 
 app.listen(port, () => {
-  console.log(`Listening to the port ${port}`)
+  console.log(`listening on port ${port}`)
 })

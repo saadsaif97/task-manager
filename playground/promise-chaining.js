@@ -1,41 +1,22 @@
 require('../src/db/mongoose')
-const Task = require('../src/models/task')
+const User = require('../src/models/user')
 
-// const task = new Task({
-//   task: 'Time zaya',
-//   completed: true,
-// })
-
-// Task.find(
-//   {
-//     completed: true,
-//   },
-//   (err, result) => {
-//     if (err) {
-//       return console.log(err)
-//     }
-
+// User.findByIdAndUpdate('6008664e80cbfd45c0a3f965', { age: 20 })
+//   .then((result) => {
 //     console.log(result)
-//   }
-// )
+//     return User.find({ age: 23 })
+//   })
+//   .then((users) => {
+//     console.log(users)
+//   })
+//   .catch((err) => console.log(err))
 
-Task.findByIdAndDelete('600d3ce584846944bc107661', (err, result) => {
-  if (err) {
-    return console.log(err)
-  }
+const updateAgeandCont = async (id, age) => {
+  await User.findByIdAndUpdate(id, { age: 21 })
+  const count = User.countDocuments({ age })
+  return count
+}
 
-  console.log(result)
-
-  Task.find(
-    {
-      completed: false,
-    },
-    (err, result) => {
-      if (err) {
-        return console.log(err)
-      }
-
-      console.log(result.length)
-    }
-  )
-})
+updateAgeandCont('6008664e80cbfd45c0a3f965', 23)
+  .then((count) => console.log(count))
+  .catch((err) => console.log(err))
