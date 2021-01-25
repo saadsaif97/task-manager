@@ -52,11 +52,11 @@ router.patch('/tasks/:id', async (req, res) => {
   }
 
   try {
-    const task = await Task.findByIdAndUpdate(_id, req.body, {
-      new: true,
-      runValidators: true,
-      useFindAndModify: true,
-    })
+    const task = await Task.findById(_id)
+
+    updates.forEach((update) => (task[update] = req.body[update]))
+    await task.save()
+
     res.status(200).send(task)
   } catch (e) {
     if (e.kind == 'ObjectId') {
