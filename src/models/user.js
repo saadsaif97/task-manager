@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -37,18 +38,34 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 })
 
-// defining the class function (static function) on the user model
-userSchema.statics.findByCredentials = async (email, password) => {
+// you dont have to use arrow function while defining the instance and model methods to access the user instance and class
+// defining the instance method
+userSchema.methods.generateAuthToken = async function () {
+  const user = this
+
+  const token = jwt.sign({ _id: user._id.toString() }, 'thisIsMyNewCourse')
+  user.tokens = user.tokens.concat({ token })
+  await user.save()
+
+  return token
+}
+
+// defining the model method
+userSchema.statics.findByCredentials = async function (email, password) {
   const user = await User.findOne({ email })
-  if (!user) {
-    throw new Error('Unable to login')
-  }
+  if (!user) throw new Error('Unable to login')
   const isMatched = await bcryptjs.compare(password, user.password)
-  if (!isMatched) {
-    throw new Error('Unable to login')
-  }
+  if (!isMatched) throw new Error('Unable to login')
 
   return user
 }
