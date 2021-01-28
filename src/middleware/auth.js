@@ -5,12 +5,13 @@ const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '') // if header has no Authorization, the replace method will throw an error the will redirect to catch
     const decoded = jwt.verify(token, 'thisIsMyNewCourse')
-    const user = await User.findOne({ _id: decoded._id })
+    const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 
     if (!user) {
       throw new Error()
     }
 
+    req.token = token
     req.user = user
     next()
   } catch (e) {

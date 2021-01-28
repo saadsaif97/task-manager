@@ -6,23 +6,51 @@ const router = new express.Router()
 
 router.post('/users', async (req, res) => {
   const user = new User(req.body)
-  const token = await user.generateAuthToken(req.body.email, req.body.password)
   try {
+    const token = await user.generateAuthToken(
+      req.body.email,
+      req.body.password
+    )
     await user.save()
-    res.status(201).send({ user, token })
+    res.status(201).send({ user: user.toPublicProfile(), token })
   } catch (e) {
     res.status(400).send(e)
   }
 })
 
 router.post('/users/login', async (req, res) => {
-  const user = await User.findByCredentials(req.body.email, req.body.password)
-  const token = await user.generateAuthToken()
-
   try {
-    res.status(200).send({ user, token })
+    const user = await User.findByCredentials(req.body.email, req.body.password)
+    const token = await user.generateAuthToken()
+    res.send({ user: user.toPublicProfile(), token })
   } catch (e) {
     res.status(400).send(e)
+  }
+})
+
+router.post('/users/logout', auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(
+      (token) => token.token !== req.token
+    )
+    await req.user.save()
+    res.send({
+      message: 'User logged out successfully',
+    })
+  } catch (e) {
+    res.status(500).send()
+  }
+})
+
+router.post('/users/logoutAll', auth, async (req, res) => {
+  try {
+    req.user.tokens = []
+    await req.user.save()
+    res.send({
+      message: 'Logged out from all acounts',
+    })
+  } catch (e) {
+    res.status(500).send()
   }
 })
 
@@ -36,7 +64,7 @@ router.get('/users/:id', async (req, res) => {
 
   try {
     const user = await User.findById(_id)
-    res.status(200).send(user)
+    res.send(user)
   } catch (e) {
     if (e.kind == 'ObjectId') {
       return res.status(404).send({
@@ -67,7 +95,7 @@ router.patch('/users/:id', async (req, res) => {
     updates.forEach((update) => (user[update] = req.body[update]))
     await user.save()
 
-    res.status(200).send(user)
+    res.send(user)
   } catch (e) {
     if (e.kind == 'ObjectId') {
       return res.status(404).send({
@@ -87,7 +115,7 @@ router.delete('/users/:id', async (req, res) => {
         error: `No user found with id: ${req.params.id}`,
       })
     }
-    res.status(200).send(user)
+    res.send(user)
   } catch (e) {
     if (e.kind == 'ObjectId') {
       return res.status(400).send({

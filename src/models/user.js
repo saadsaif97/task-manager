@@ -48,6 +48,16 @@ const userSchema = new mongoose.Schema({
   ],
 })
 
+userSchema.methods.toPublicProfile = function () {
+  user = this
+  const userObject = user.toObject()
+
+  delete userObject.tokens
+  delete userObject.password
+
+  return userObject
+}
+
 // you dont have to use arrow function while defining the instance and model methods to access the user instance and class
 // defining the instance method
 userSchema.methods.generateAuthToken = async function () {
@@ -63,10 +73,13 @@ userSchema.methods.generateAuthToken = async function () {
 // defining the model method
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await User.findOne({ email })
-  if (!user) throw new Error('Unable to login')
+  if (!user) {
+    throw new Error('Unable to login')
+  }
   const isMatched = await bcryptjs.compare(password, user.password)
-  if (!isMatched) throw new Error('Unable to login')
-
+  if (!isMatched) {
+    throw new Error('Unable to login')
+  }
   return user
 }
 
