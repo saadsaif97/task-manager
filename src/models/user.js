@@ -4,50 +4,55 @@ const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Task = require('./task')
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true,
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error('Please input the valid email')
-      }
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
     },
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      if (value.toLowerCase().includes('password')) {
-        throw new Error('Password must not include "password"')
-      } else if (value.length <= 6) {
-        throw new Error('Password must be greater than 6 digits long')
-      }
-    },
-  },
-  age: {
-    type: Number,
-    default: 0,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error('Please input the valid email')
+        }
       },
     },
-  ],
-})
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      validate(value) {
+        if (value.toLowerCase().includes('password')) {
+          throw new Error('Password must not include "password"')
+        } else if (value.length <= 6) {
+          throw new Error('Password must be greater than 6 digits long')
+        }
+      },
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+)
 
 // By default mongoose does not attach vituals
 // Make userSchema attach virtuals whenever calling `JSON.stringify()`,
