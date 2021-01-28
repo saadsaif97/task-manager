@@ -58,7 +58,7 @@ userSchema.methods.toJSON = function () {
   return userObject
 }
 
-// you dont have to use arrow function while defining the instance and model methods to access the user instance and class
+// you dont have to use arrow function while defining the instance and model methods TO ACCESS the user instance and class
 // defining the instance method
 userSchema.methods.generateAuthToken = async function () {
   const user = this

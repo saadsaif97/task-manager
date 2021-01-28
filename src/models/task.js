@@ -11,6 +11,10 @@ const Task = mongoose.model('Task', {
     type: Boolean,
     default: false,
   },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
 })
 
 module.exports = Task
