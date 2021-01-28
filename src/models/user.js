@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Task = require('./task')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -48,9 +49,10 @@ const userSchema = new mongoose.Schema({
   ],
 })
 
-// Make Mongoose attach virtuals whenever calling `JSON.stringify()`,
+// By default mongoose does not attach vituals
+// Make userSchema attach virtuals whenever calling `JSON.stringify()`,
 // including using `res.json()`
-userSchema.set('toJSON', { virtuals: true })
+// userSchema.set('toJSON', { virtuals: true })
 
 userSchema.virtual('tasks', {
   ref: 'Task',
@@ -99,6 +101,15 @@ userSchema.pre('save', async function (next) {
   if (user.isModified('password')) {
     user.password = await bcryptjs.hash(user.password, 8)
   }
+
+  next()
+})
+
+// we could use it where the user was deleted but its good habit to use middleware for such things
+userSchema.pre('remove', async function (next) {
+  const user = this
+
+  await Task.deleteMany({ author: user._id })
 
   next()
 })
