@@ -12,6 +12,7 @@ const Task = mongoose.model('Task', {
     default: false,
   },
   author: {
+    ref: 'User',
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },

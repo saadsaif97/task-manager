@@ -48,6 +48,16 @@ const userSchema = new mongoose.Schema({
   ],
 })
 
+// Make Mongoose attach virtuals whenever calling `JSON.stringify()`,
+// including using `res.json()`
+userSchema.set('toJSON', { virtuals: true })
+
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id',
+  foreignField: 'author',
+})
+
 userSchema.methods.toJSON = function () {
   user = this
   const userObject = user.toObject()
