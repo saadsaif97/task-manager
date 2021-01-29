@@ -1,5 +1,4 @@
 const express = require('express')
-// const multer = require('multer')
 require('./db/mongoose')
 
 // import router
@@ -18,32 +17,3 @@ app.use(taskRouter)
 app.listen(port, () => {
   console.log(`listening on port ${port}`)
 })
-
-// // config the multer
-// const upload = multer({
-//   dest: 'uploads',
-//   limits: {
-//     fileSize: 1000000,
-//   },
-//   fileFilter(req, file, cb) {
-//     if (!file.originalname.match(/\.(doc|docx)$/)) {
-//       cb(new Error('Please upload the word document'))
-//     }
-
-//     cb(undefined, true)
-//   },
-// })
-// const errorMiddleware = () => {
-//   throw new Error('From the error middleware')
-// }
-
-// app.post(
-//   '/upload',
-//   errorMiddleware,
-//   (req, res) => {
-//     res.send()
-//   },
-//   (error, req, res, next) => {
-//     res.status(400).send(error.message)
-//   }
-// )
