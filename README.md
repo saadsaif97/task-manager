@@ -1,5 +1,7 @@
 # task-manager
 
+I followed along the udemy tutor to complete this project
+
 This app uses:
 
 - node
