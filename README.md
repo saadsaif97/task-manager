@@ -6,7 +6,7 @@ This app uses:
 - express
 - mongodb
 - jwt
-- @sendgrid
+- @sendgrid/mail
 - sharp
 - mongoose and other npm libraries
 
