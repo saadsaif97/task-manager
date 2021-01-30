@@ -5,9 +5,13 @@ This app uses:
 - node
 - express
 - mongodb
+- jwt
+- @sendgrid
+- sharp
 - mongoose and other npm libraries
 
 API Features:
 
-- user creation
-- task creation
+- CRUD for user, task
+- user also has profile picture stored in db
+- email notifications on signup and account deletion
