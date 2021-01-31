@@ -1,6 +1,9 @@
 # task-manager
 
 I followed along the udemy tutor to complete this project
+This project was for learning purpose
+
+It is just the api and has no ui
 
 This app uses:
 
@@ -10,6 +13,8 @@ This app uses:
 - jwt
 - @sendgrid/mail
 - sharp
+- jest
+- supertest for api test
 - mongoose and other npm libraries
 
 API Features:
