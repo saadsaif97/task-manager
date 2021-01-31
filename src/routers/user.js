@@ -14,7 +14,7 @@ router.post('/users', async (req, res) => {
       req.body.email,
       req.body.password
     )
-    // welcomeMessage(user.email, user.name)
+    welcomeMessage(user.email, user.name)
     await user.save()
     res.status(201).send({ user, token })
   } catch (e) {

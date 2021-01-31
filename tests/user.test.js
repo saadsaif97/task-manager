@@ -95,7 +95,7 @@ test('user can delete the account', async () => {
 
   // test that user is deleted from database
   const user = await User.findById(userOneId)
-  expect(user)
+  expect(user).toBeNull()
 })
 
 test('unauthorized user cannot delete the account', async () => {
